@@ -136,6 +136,8 @@ export class LocalDiscoveryAgent {
         content: result.content?.slice(0, 500) || ''
       }));
 
+      console.log(`🔗 Search results with URLs:`, searchData.slice(0, 3).map(r => ({ title: r.title, url: r.url })));
+
       const prompt = `You are an expert local discovery agent. I've gathered web search results for the query "${task.query}" near location "${task.location}" (${task.coordinates.lat}, ${task.coordinates.lng}) within ${task.radius}km radius.
 
 SEARCH RESULTS DATA:
@@ -147,9 +149,10 @@ IMPORTANT INSTRUCTIONS:
 1. Only extract information about places that are mentioned in the search results
 2. Create realistic recommendations based on the actual data found
 3. If you find specific business names, addresses, or details in the search results, use them
-4. For missing information (rating, hours, exact coordinates), make reasonable estimates based on typical businesses of that type
-5. Ensure all recommendations are within the specified radius of ${task.coordinates.lat}, ${task.coordinates.lng}
-6. Focus on the most relevant and popular places mentioned in the search results
+4. ALWAYS include the URL from search results as externalUrl - this is critical for the view button
+5. For missing information (rating, hours), make reasonable estimates based on typical businesses
+6. Generate coordinates that are VERY close to ${task.coordinates.lat}, ${task.coordinates.lng} (within ${task.radius}km)
+7. Focus on the most relevant and popular places mentioned in the search results
 
 Return a JSON object with this exact structure:
 {
@@ -159,12 +162,12 @@ Return a JSON object with this exact structure:
       "type": "Category (Restaurant, Cafe, etc.)",
       "description": "Description based on search results information",
       "address": "Full address if found in search results, or estimated based on location",
-      "latitude": number (near the search coordinates),
-      "longitude": number (near the search coordinates),
+      "latitude": number (MUST be within ${task.radius}km of ${task.coordinates.lat}),
+      "longitude": number (MUST be within ${task.radius}km of ${task.coordinates.lng}),
       "rating": number (1-5 scale, estimated if not found),
       "hours": "Operating hours if mentioned, or typical hours for this type of business",
       "imageUrl": null,
-      "externalUrl": "Website URL if found in search results"
+      "externalUrl": "REQUIRED: Use the URL from search results - very important for functionality"
     }
   ]
 }
@@ -210,18 +213,25 @@ Extract 4-8 recommendations from the search results. If no relevant places are f
         throw new Error("Invalid response format from analysis");
       }
 
-      return result.recommendations.map((rec: any) => ({
-        name: rec.name || "Unknown Business",
-        type: rec.type || "Place",
-        description: rec.description || "No description available",
-        address: rec.address || "Address not available",
-        latitude: parseFloat(rec.latitude) || task.coordinates.lat,
-        longitude: parseFloat(rec.longitude) || task.coordinates.lng,
-        rating: rec.rating ? parseFloat(rec.rating) : undefined,
-        hours: rec.hours || undefined,
-        imageUrl: rec.imageUrl || undefined,
-        externalUrl: rec.externalUrl || undefined,
-      }));
+      return result.recommendations.map((rec: any) => {
+        // Calculate small random offset to ensure places are within radius
+        const maxOffset = (task.radius / 111) * 0.8; // 80% of radius in degrees (roughly)
+        const latOffset = (Math.random() - 0.5) * maxOffset;
+        const lngOffset = (Math.random() - 0.5) * maxOffset;
+        
+        return {
+          name: rec.name || "Unknown Business",
+          type: rec.type || "Place",
+          description: rec.description || "No description available",
+          address: rec.address || "Address not available",
+          latitude: parseFloat(rec.latitude) || (task.coordinates.lat + latOffset),
+          longitude: parseFloat(rec.longitude) || (task.coordinates.lng + lngOffset),
+          rating: rec.rating ? parseFloat(rec.rating) : undefined,
+          hours: rec.hours || undefined,
+          imageUrl: rec.imageUrl || undefined,
+          externalUrl: rec.externalUrl || undefined,
+        };
+      });
 
     } catch (error) {
       console.error("Error analyzing search results:", error);

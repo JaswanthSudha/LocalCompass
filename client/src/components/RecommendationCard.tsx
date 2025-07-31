@@ -33,11 +33,19 @@ export function RecommendationCard({ recommendation }: RecommendationCardProps) 
   };
 
   const handleViewDetails = () => {
+    console.log('View details for:', recommendation.name);
     if (recommendation.externalUrl) {
-      window.open(recommendation.externalUrl, '_blank');
+      // Clean the URL and ensure it opens properly
+      let url = recommendation.externalUrl;
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      window.open(url, '_blank', 'noopener,noreferrer');
     } else {
-      // Could implement a detail modal or page here
-      console.log('View details for:', recommendation.name);
+      // Search for the business on Google as fallback
+      const searchQuery = encodeURIComponent(`${recommendation.name} ${recommendation.address}`);
+      const googleSearchUrl = `https://www.google.com/search?q=${searchQuery}`;
+      window.open(googleSearchUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
