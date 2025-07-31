@@ -1,0 +1,118 @@
+This is a fantastic idea! Building an LLM-powered agent to find local recommendations with a robust and responsive application is a challenging but very rewarding project. Here's a detailed prompt covering all aspects:
+
+---
+
+## Project Prompt: Local Discovery Agent with LLM
+
+**Goal:** Develop a robust, responsive, and location-aware web application that leverages a Large Language Model (LLM) to provide personalized recommendations for places to go or things to do (e.g., movies, restaurants, events, parks) within a specified radius (starting from 10km) of the user's current location. The application should simplify the decision-making process by providing curated and relevant options, eliminating the need for extensive manual searching.
+
+**Core Features:**
+
+1.  **LLM-Powered Recommendation Engine:**
+    * The LLM should be capable of understanding natural language queries (e.g., "I want to watch a comedy movie," "Find a quiet cafe near me," "What events are happening this weekend?").
+    * It should use internet search capabilities to gather real-time information about movies, events, restaurants, and other points of interest.
+    * The LLM should synthesize information from multiple sources to provide concise, relevant, and well-reasoned recommendations.
+    * It should consider user preferences (e.g., genre, cuisine, activity type, budget if specified in the query) when generating recommendations.
+    * The LLM should be able to clarify ambiguous queries and ask follow-up questions if needed to refine the search.
+    * **Crucially:** The LLM's output must be structured and easily parseable by the backend (e.g., JSON format) to allow for display and further processing.
+
+2.  **Location-Based Search:**
+    * The application must accurately detect the user's current location (with user permission).
+    * It should allow the user to specify a search radius, defaulting to 10km, but adjustable (e.g., 5km, 20km, 50km).
+    * All recommendations must fall within the specified geographical radius.
+
+3.  **User Interface (Frontend):**
+    * **Responsiveness:** The UI must be fully responsive, providing an optimal user experience across various devices, especially mobile phones. This includes:
+        * Flexible grid layouts that adapt to different screen sizes.
+        * Responsive images and media.
+        * Clear and legible typography on all devices.
+        * Intuitive navigation for mobile users (e.g., hamburger menus).
+        * Fast loading times.
+    * **Intuitive Search:** A clear input field for natural language queries.
+    * **Location Input/Confirmation:** A way to display the detected location and allow the user to confirm or manually input a location if necessary. A slider or dropdown for adjusting the radius.
+    * **Recommendation Display:**
+        * Clean, card-based display of recommendations.
+        * Each recommendation card should include:
+            * Name of the place/event.
+            * Type (e.g., "Movie," "Restaurant," "Concert").
+            * Brief description.
+            * Distance from the user's location.
+            * Address.
+            * Relevant details (e.g., movie showtimes, restaurant cuisine/rating, event date/time).
+            * A link for more information (e.g., booking, official website).
+            * Optionally, an image/thumbnail.
+    * **Loading States & Feedback:** Clear visual feedback during search and loading.
+    * **Error Handling:** User-friendly messages for errors (e.g., "Location not found," "No recommendations found in this area," "LLM error").
+
+4.  **Backend Services:**
+    * **API Gateway:** A robust API to handle requests from the frontend, communicate with the LLM, perform location-based filtering, and interact with the database.
+    * **Location Service:**
+        * Receives user's current coordinates.
+        * Implements geospatial queries to filter results based on radius.
+        * Integrates with a mapping API (e.g., Google Maps API, OpenStreetMap API) for geocoding and reverse geocoding if needed.
+    * **LLM Integration Layer:**
+        * Manages API calls to the chosen LLM service (e.g., Google Gemini API, OpenAI API).
+        * Handles prompt engineering to guide the LLM's output into the desired structured format.
+        * Parses and validates LLM responses.
+    * **Data Aggregation/Scraping (Considerations):** If direct LLM internet search isn't sufficient for specific data points, the backend might need to implement targeted web scraping or integrate with relevant APIs (e.g., ticket booking APIs, restaurant listing APIs).
+    * **Recommendation Processing:** Takes the raw recommendations from the LLM and enriches them with structured data, calculates distances, and prepares them for the frontend.
+
+5.  **Database:**
+    * **Geospatial Capabilities:** The database must be able to efficiently store and query geographical data (latitude/longitude, points, polygons).
+    * **Scalability:** Capable of handling a growing number of users and recommendations.
+    * **Examples:** PostgreSQL with PostGIS extension, MongoDB with GeoJSON support, or cloud-based solutions like Google Cloud Firestore with geospatial queries.
+    * **Data Storage:** Store cached recommendations (to reduce LLM calls for popular searches), user preferences (if implementing user accounts later), and potentially a knowledge base of local places.
+
+**Technical Stack Recommendations:**
+
+* **Frontend:** React, Vue.js, Angular, or a mobile-first framework like React Native (for a truly native feel, though a responsive web app is the primary request). Consider Tailwind CSS or Bootstrap for responsive design.
+* **Backend:** Node.js (with Express.js or NestJS), Python (with Django or Flask), Go (with Gin), or Java (with Spring Boot). These offer good ecosystems for API development and integrating with external services.
+* **LLM:** Choose a robust LLM API provider (e.g., Google Gemini API, OpenAI API).
+* **Database:** PostgreSQL with PostGIS (recommended for robust geospatial queries and open-source nature), MongoDB, or a similar NoSQL database with geospatial support.
+* **Mapping/Location APIs:** Google Maps Platform (Geocoding API, Places API, Distance Matrix API), OpenStreetMap tools.
+
+**Testing Strategy:**
+
+1.  **Unit Testing:**
+    * **Frontend:** Test individual components (e.g., search bar, recommendation card, location picker) for rendering, state management, and user interactions.
+    * **Backend:** Test API endpoints, data processing logic, and database interactions.
+    * **LLM Integration:** Test prompt generation, LLM API calls, and response parsing. Mock LLM responses for deterministic testing.
+
+2.  **Integration Testing:**
+    * Test the full request-response flow from frontend to backend, including LLM calls and database interactions.
+    * Verify correct data flow and transformation between services.
+
+3.  **End-to-End Testing (E2E):**
+    * Simulate real user scenarios to ensure the entire application works as expected.
+    * Use tools like Cypress or Playwright for browser automation.
+    * Focus on key user journeys:
+        * Entering a query, getting location, displaying recommendations.
+        * Adjusting radius and seeing updated results.
+        * Handling edge cases (no results, API errors).
+
+4.  **LLM-Specific Testing:**
+    * **Prompt Robustness:** Test with a wide range of natural language queries, including ambiguous, vague, and very specific ones, to ensure the LLM handles them gracefully.
+    * **Hallucination Detection:** Implement mechanisms to check for factual accuracy and reduce "hallucinations" from the LLM (e.g., cross-referencing with reliable data sources).
+    * **Bias Detection:** Test for and mitigate any biases in recommendations (e.g., unfair representation of certain types of places or demographics).
+    * **Relevance and Coherence:** Evaluate the quality, relevance, and coherence of LLM-generated recommendations using human review or LLM-as-a-judge models.
+    * **Performance Testing:** Monitor LLM response times and optimize prompt length and complexity for efficiency and cost.
+    * **Regression Testing:** Regularly re-test LLM performance after any model updates or prompt changes to prevent degradation.
+
+5.  **Performance Testing:**
+    * Stress test the backend to ensure it can handle concurrent users and requests.
+    * Measure page load times and API response times, especially on mobile networks.
+
+6.  **Usability Testing:**
+    * Conduct user acceptance testing (UAT) with real users to gather feedback on the overall experience, especially responsiveness and ease of use on mobile.
+
+7.  **Security Testing:**
+    * Ensure secure handling of user location data and API keys.
+    * Protect against common web vulnerabilities (e.g., XSS, SQL injection).
+
+**Deployment and Monitoring:**
+
+* **Cloud Platform:** Deploy on a scalable cloud platform like AWS, Google Cloud Platform (GCP), or Azure.
+* **CI/CD:** Implement Continuous Integration/Continuous Deployment pipelines to automate testing and deployment, ensuring reliable updates.
+* **Monitoring & Logging:** Set up comprehensive monitoring for application health, performance, errors, and LLM usage.
+
+---
