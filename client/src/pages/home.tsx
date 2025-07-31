@@ -84,11 +84,11 @@ export default function Home() {
               Discover Amazing Places Near You
             </h2>
             <p className="text-lg lg:text-xl text-blue-100 max-w-2xl mx-auto">
-              Tell us what you're looking for in plain English. Our AI will find local recommendations based on known places and businesses.
+              Tell us what you're looking for in plain English. Our intelligent agent searches the web and finds real places near you.
             </p>
-            <div className="mt-4 p-3 bg-blue-600/30 rounded-lg max-w-2xl mx-auto">
+            <div className="mt-4 p-3 bg-green-600/30 rounded-lg max-w-2xl mx-auto">
               <p className="text-sm text-blue-100">
-                <strong>Note:</strong> Recommendations are based on AI knowledge of established businesses. For real-time hours and availability, please verify directly with the location.
+                <strong>Version 2:</strong> Now powered by an intelligent search agent that automatically searches the internet and gathers real-time information about local businesses.
               </p>
             </div>
           </div>

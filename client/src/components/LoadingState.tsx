@@ -9,10 +9,10 @@ export function LoadingState() {
           <Bot className="text-white w-6 h-6 animate-pulse" />
         </div>
         <h4 className="text-xl font-semibold text-slate-800 mb-2">
-          AI is searching for you...
+          Agent is searching the web for you...
         </h4>
         <p className="text-slate-600">
-          Analyzing your request and finding the best local recommendations
+          Our intelligent agent is performing web searches and gathering real-time information about local places
         </p>
       </div>
       

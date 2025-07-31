@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { searchRequestSchema } from "@shared/schema";
-import { getLocalRecommendations } from "./services/gemini";
+import { agentService } from "./services/agentService";
 import { calculateDistance, isValidCoordinates, formatDistance } from "./services/location";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -25,8 +25,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(cachedQuery.results);
       }
 
-      // Get recommendations from OpenAI
-      const recommendations = await getLocalRecommendations(query, latitude, longitude, radius);
+      // Get recommendations from intelligent agent (Version 2)
+      const recommendations = await agentService.getLocalRecommendations(query, latitude, longitude, radius);
       
       // Calculate distances and filter by radius
       const enrichedRecommendations = recommendations

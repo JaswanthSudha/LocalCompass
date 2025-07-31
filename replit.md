@@ -17,6 +17,13 @@ AI Model Preference: Google Gemini (switched from OpenAI per user request)
 - Added documentation about data limitations and real-time integration options
 - Added user disclaimer about data accuracy and verification needs
 
+**2025-07-31 (Version 2)**: Implemented intelligent search agent system
+- Created LocalDiscoveryAgent that performs real web searches using DuckDuckGo
+- Agent automatically searches the internet for local businesses based on location
+- Gemini now acts as a mediator to analyze and structure web search results
+- Added web scraping capabilities for enhanced data gathering
+- System now provides real-time business information rather than static AI knowledge
+
 ## System Architecture
 
 ### Frontend Architecture
