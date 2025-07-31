@@ -172,7 +172,7 @@ Return a JSON object with this exact structure:
   ]
 }
 
-Extract 4-8 recommendations from the search results. If no relevant places are found in the search results, return an empty array.`;
+Extract 8-15 recommendations from the search results. If no relevant places are found in the search results, return an empty array.`;
 
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
@@ -263,15 +263,18 @@ Extract 4-8 recommendations from the search results. If no relevant places are f
         `${query} in ${locationString}`,
         `${query} near ${locationString}`,
         `best ${query} ${locationString}`,
+        `top ${query} ${locationString}`,
+        `popular ${query} ${locationString}`,
         `${query} ${locationString} reviews`,
-        `${query} ${locationString} yelp google maps`
+        `${query} ${locationString} yelp google maps`,
+        `${query} ${locationString} tripadvisor foursquare`
       ];
 
       console.log(`🔍 Agent performing web searches...`);
       
       // Step 2: Perform web searches
       const allSearchResults: WebSearchResult[] = [];
-      for (const searchQuery of searchQueries.slice(0, 3)) { // Try 3 searches for better coverage
+      for (const searchQuery of searchQueries.slice(0, 5)) { // Try 5 searches for better coverage
         const results = await this.performWebSearch(searchQuery);
         allSearchResults.push(...results);
         
@@ -337,7 +340,7 @@ Provide realistic recommendations for businesses that are likely to exist in thi
 - Popular local establishments if you know the area
 - Generic but realistic business information
 
-Return a JSON response with 3-5 recommendations in this format:
+Return a JSON response with 8-12 recommendations in this format:
 {
   "recommendations": [
     {

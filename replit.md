@@ -24,6 +24,13 @@ AI Model Preference: Google Gemini (switched from OpenAI per user request)
 - Added web scraping capabilities for enhanced data gathering
 - System now provides real-time business information rather than static AI knowledge
 
+**2025-07-31 (Enhanced)**: Increased recommendation capacity and accuracy
+- Added EnhancedLocalDiscoveryAgent for comprehensive recommendations (10-20 results)
+- Improved radius accuracy with precise distance calculations
+- Enhanced view button functionality with Google search fallback
+- Fixed coordinate generation to ensure all places are within specified radius
+- Combined web search and enhanced agents for maximum recommendation coverage
+
 ## System Architecture
 
 ### Frontend Architecture
