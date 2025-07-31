@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { searchRequestSchema } from "@shared/schema";
-import { getLocalRecommendations } from "./services/openai";
+import { getLocalRecommendations } from "./services/gemini";
 import { calculateDistance, isValidCoordinates, formatDistance } from "./services/location";
 
 export async function registerRoutes(app: Express): Promise<Server> {

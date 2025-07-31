@@ -34,7 +34,7 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Search & Recommendation Engine
-- **LLM Integration**: OpenAI GPT-4o for processing natural language queries
+- **LLM Integration**: Google Gemini 2.5 Flash for processing natural language queries
 - **Location Services**: Browser geolocation API with manual location input fallback
 - **Distance Calculation**: Haversine formula for accurate distance calculations
 - **Caching**: Query result caching to improve performance and reduce API calls
@@ -56,7 +56,7 @@ Preferred communication style: Simple, everyday language.
 1. **User Input**: User enters natural language query and location is detected/confirmed
 2. **Validation**: Request validated using Zod schemas before processing
 3. **Cache Check**: System checks for existing cached results for the same query/location
-4. **LLM Processing**: If no cache, query sent to OpenAI for recommendation generation
+4. **LLM Processing**: If no cache, query sent to Google Gemini for recommendation generation
 5. **Location Filtering**: Results filtered by distance and sorted by proximity
 6. **Response**: Structured recommendations returned with distance calculations
 7. **Caching**: Results cached for future similar queries
@@ -65,7 +65,7 @@ Preferred communication style: Simple, everyday language.
 ## External Dependencies
 
 ### Core Dependencies
-- **OpenAI API**: For natural language processing and recommendation generation
+- **Google Gemini API**: For natural language processing and recommendation generation
 - **Neon Database**: Serverless PostgreSQL hosting
 - **Geolocation API**: Browser-based location detection
 
@@ -84,7 +84,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Development
 - **Hot Module Replacement**: Vite dev server with Express integration
-- **Environment Variables**: OpenAI API key and database URL configuration
+- **Environment Variables**: Google Gemini API key and database URL configuration
 - **Type Checking**: TypeScript compilation without emit for development
 
 ### Production Build
