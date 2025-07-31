@@ -7,6 +7,15 @@ LocalBot is a responsive web application that leverages Large Language Models (L
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+AI Model Preference: Google Gemini (switched from OpenAI per user request)
+
+## Recent Changes
+
+**2025-07-31**: Switched from OpenAI to Google Gemini 2.5 Flash model
+- Replaced OpenAI integration with Google Gemini API
+- Updated prompts for better real place recommendations  
+- Added documentation about data limitations and real-time integration options
+- Added user disclaimer about data accuracy and verification needs
 
 ## System Architecture
 

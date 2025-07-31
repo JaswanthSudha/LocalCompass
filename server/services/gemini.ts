@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { enhanceGeminiPrompt } from "./websearch";
 
 // DON'T DELETE THIS COMMENT
 // Follow these instructions when using this blueprint:
@@ -28,37 +29,24 @@ export async function getLocalRecommendations(
   radius: number
 ): Promise<LocationRecommendation[]> {
   try {
-    const prompt = `You are a local discovery AI assistant. Based on the user's query and location, provide recommendations for places, activities, restaurants, events, or attractions.
+    const enhancedPrompt = enhanceGeminiPrompt(query, latitude, longitude);
+    
+    const prompt = `${enhancedPrompt}
 
-User Query: "${query}"
-Location: Latitude ${latitude}, Longitude ${longitude}
 Search Radius: ${radius} km
 
-Please search for and recommend relevant places within the specified radius. For each recommendation, provide:
-
-1. Name of the place/business
+For each recommendation, provide:
+1. Name of the place/business (must be real and currently operating)
 2. Type (e.g., Restaurant, Cafe, Museum, Park, etc.)
-3. Brief description (2-3 sentences)
-4. Full address
-5. Approximate latitude and longitude coordinates
-6. Rating (1-5 scale if available)
-7. Hours of operation (if available)
-8. Image URL (if available)
-9. Website or booking URL (if available)
+3. Brief description based on what you know about real places in this area
+4. Complete street address (real address that exists)
+5. Accurate latitude and longitude coordinates
+6. Realistic rating from review sites (1-5 scale)
+7. Typical hours of operation for this type of business
+8. Real website URL if you know it exists
+9. Why it matches the user's query
 
-Return your response as a JSON object with an array of recommendations. Each recommendation should have these exact fields:
-- name (string)
-- type (string)
-- description (string)
-- address (string)
-- latitude (number)
-- longitude (number)
-- rating (number, optional)
-- hours (string, optional)
-- imageUrl (string, optional)
-- externalUrl (string, optional)
-
-Focus on real, existing places that match the user's query. Prioritize popular, well-reviewed establishments. Limit to 6-8 recommendations.
+Return only well-established places that you're confident actually exist. Limit to 6-8 recommendations.
 
 Response format:
 {
