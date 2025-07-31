@@ -24,7 +24,7 @@ export class LocalDiscoveryAgent {
     try {
       // Simple reverse geocoding using a free service
       const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-      const data = await response.json();
+      const data = await response.json() as any;
       
       if (data && data.address) {
         const city = data.address.city || data.address.town || data.address.village;
